@@ -10,6 +10,10 @@ export default class FilmRow extends Component {
     //   return console.log(faves);
     // };
   };
+
+  onFaveToggle() {
+    console.log(" onFaveToggle");
+  }
   render() {
     const posterUrl = this.props.poster_path;
     const title = this.props.filmTitle;

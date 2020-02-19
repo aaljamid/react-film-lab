@@ -28,7 +28,7 @@ export default class FilmList extends Component {
   // };
 
   render() {
-    // const getImg = "https://image.tmdb.org/t/p/w780";
+    // const getImg = "https://image.tmdb.org/t/p/w780" + film.poster_path;
 
     const filter = this.state.filter ? "all" : "faves";
 
