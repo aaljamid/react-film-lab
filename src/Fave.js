@@ -8,18 +8,19 @@ export default class Fave extends Component {
     };
   }
 
+  // Click handler with an arrow function that binds the event
   handleClick = e => {
-    // const textValue = e.target.value;
     e.stopPropagation();
-    console.log("Handling Fave click!");
+    console.log("click");
     this.props.onFaveToggle();
   };
 
   render() {
     const isFave = this.props.isFave ? "remove_from_queue" : "add_to_queue";
+    const message = this.props.isFave ? "remove_from_queue" : "add_to_queue";
     return (
-      <div onClick={this.handleClick} className={"film-row-fave " + isFave}>
-        <p className="material-icons">{isFave}</p>
+      <div className={`film-row-fave ${isFave}`} onClick={this.handleClick}>
+        <p className="material-icons">{message}</p>
       </div>
     );
   }

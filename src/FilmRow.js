@@ -1,32 +1,45 @@
 import React, { Component } from "react";
+// import FilmPost, Fave child components
 import FilmPoster from "./FilmPoster";
 import Fave from "./Fave";
 
 export default class FilmRow extends Component {
-  handleDetailsClick = film => {
-    // const filteredFilmList =
-    console.log(this.props.filmTitle);
-    // function(faves) {
-    //   return console.log(faves);
-    // };
-  };
-
-  onFaveToggle() {
-    console.log(" onFaveToggle");
+  handleDetailsClick(film) {
+    console.log(`Fetching details for ${film.title}`);
   }
+
   render() {
-    const posterUrl = this.props.poster_path;
-    const title = this.props.filmTitle;
-    const releaseDate = new Date(this.props.release_date);
+    const getImg = "https://image.tmdb.org/t/p/w780";
+    // Declaring variables to hold the props
+    // Create the Url for the poster
+    const posterUrl = getImg + this.props.film.poster_path;
+    // Get the Film title
+    const title = this.props.film.title;
+    // Get the release date in a date object
+    const releaseDate = new Date(this.props.film.release_date);
+    // Get the year from the release date
     const releaseYear = releaseDate.getFullYear();
+
     return (
-      <div className="film-row">
+      // Create a main div holding each row
+      <div
+        className="film-row"
+        onClick={() => this.handleDetailsClick(this.props.film)}
+      >
+        {/* Create a child component holding the poster, 
+        and passing the image and title as props */}
         <FilmPoster posterUrl={posterUrl} title={title} />
 
-        <div onClick={() => this.handleDetailsClick()} className="film-summary">
+        {/* Create a div about the movie summary containing the title
+        and release year */}
+        <div className="film-summary">
+          <Fave
+            onFaveToggle={this.props.onFaveToggle}
+            isFave={this.props.isFave}
+          />
           <h1>{title}</h1>
+
           <p>{releaseYear}</p>
-          <Fave />
         </div>
       </div>
     );

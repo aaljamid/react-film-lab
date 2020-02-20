@@ -1,52 +1,55 @@
 import React, { Component } from "react";
+// import the FilmRow child component
 import FilmRow from "./FilmRow";
-import Fave from "./Fave";
 
 export default class FilmList extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       filter: "all"
     };
   }
 
   handleFilterClick = filter => {
-    console.log(filter);
-
-    this.setState({
-      filter: filter
-    });
+    this.setState({ filter: filter });
   };
 
-  // handleFilterClick = faves => {
-  //   // const filteredFilmList =
-  //   console.log("321 test list");
-  //   function(faves) {
-  //     return console.log(faves);
-  //   };
-  // };
-
   render() {
-    // const getImg = "https://image.tmdb.org/t/p/w780" + film.poster_path;
+    //  Create a constant variable holding the pre-string
+    //  for the database image url
 
-    const filter = this.state.filter ? "all" : "faves";
+    let showFilms = [];
 
-    // const allFilms = this.props.films.map((film, index) => (
-    //   <FilmRow film={film} key={film.id} getImg={getImg} />
-    // ));
-
+    //  Create a constant variable array holding Film Row components
+    //  it creates components by mapping through the films array from
+    //  props then pass the props to FilmRow Child component
     const allFilms = this.props.films.map((film, index) => (
       <FilmRow
-        filmTitle={film.title}
-        release_date={film.release_date}
-        backdropUrl={film.backdrop_path}
-        id={film.id}
-        overview={film.overview}
-        poster_path={"https://image.tmdb.org/t/p/w780" + film.poster_path}
+        handleDetailsClick={this.props.handleDetailsClick}
+        film={film}
+        key={index}
+        isFave={this.props.faves.includes(film)}
+        onFaveToggle={() => this.props.onFaveToggle(film)}
       />
     ));
+
+    const favesFilms = this.props.faves.map((film, index) => {
+      return (
+        <FilmRow
+          handleDetailsClick={this.props.handleDetailsClick}
+          film={film}
+          key={index}
+          isFave={this.props.faves.includes(film)}
+          onFaveToggle={() => this.props.onFaveToggle(film)}
+        />
+      );
+    });
+    this.state.filter === "all"
+      ? (showFilms = allFilms)
+      : (showFilms = favesFilms);
+
     return (
+      // Main div for the film listing, with films h1 tag under it
       <div className="film-list">
         <h1 className="section-title">FILMS</h1>
         <div className="film-list-filters">
@@ -66,11 +69,11 @@ export default class FilmList extends Component {
             }`}
           >
             FAVES
-            <span className="section-count">0</span>
+            <span className="section-count">{this.props.faves.length}</span>
           </div>
         </div>
         {/* All films FilmRow components array */}
-        {allFilms}
+        {showFilms}
       </div>
     );
   }
