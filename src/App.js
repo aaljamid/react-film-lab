@@ -2,7 +2,7 @@ import React, { Component } from "react";
 // import the child components
 import FilmListing from "./FilmListing";
 import FilmDetails from "./FilmDetails";
-
+import axios from "axios";
 // import the film database
 import TMDB from "./TMDB";
 // import the style
@@ -33,8 +33,26 @@ class App extends Component {
   };
 
   handleDetailsClick = film => {
-    this.setState({ current: film });
+    this.setState({
+      current: axios({
+        method: "GET",
+        url: url
+      }).then(response => {
+        console.log(response); // take a look at what you get back!
+        console.log(`Fetching details for ${film.title}`);
+        this.setState({ current: response.data });
+      })
+    });
     console.log(film);
+
+    const url = `https://api.themoviedb.org/3/movie/${film.id}?api_key=${TMDB.api_key}&append_to_response=videos,images&language=en`;
+
+    axios({
+      method: "GET",
+      url: url
+    }).then(response => {
+      console.log(response); // take a look at what you get back!
+    });
   };
 
   render() {
